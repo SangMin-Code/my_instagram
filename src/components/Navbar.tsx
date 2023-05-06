@@ -33,9 +33,11 @@ const menu = [
     },
 
 ]
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Header=()=>{
     const pathname = usePathname();
+    const { data: session } = useSession()
 
     return(
         <div className='flex justify-between items-center px-6'>
@@ -51,7 +53,10 @@ const Header=()=>{
                             </Link>
                         </li>
                     )}      
-                <ColorButton text='Sign in' onClick={()=>{}}/>
+                {
+                    session ?   <ColorButton text='SignOut' onClick={()=>signOut()}/>
+                            :   <ColorButton text='SignIn' onClick={()=>signIn()}/>
+                }
                 </ul>
             </nav>
         </div>
