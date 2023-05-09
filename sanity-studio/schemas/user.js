@@ -48,7 +48,7 @@ export default {
         },
         {
             title:'Bookmarks',
-            name:'bookmars',
+            name:'bookmarks',
             type:'array',
             of:[
                 {
