@@ -34,10 +34,13 @@ const menu = [
 
 ]
 import { useSession, signIn, signOut } from "next-auth/react"
+import Avatar from './Avatar';
 
 const Header=()=>{
     const pathname = usePathname();
-    const { data: session } = useSession()
+    const { data: session } = useSession();
+    const user = session?.user;
+
 
     return(
         <div className='flex justify-between items-center px-6'>
@@ -52,11 +55,19 @@ const Header=()=>{
                                 {pathname===item.href ? item.clickedIcon : item.icon}
                             </Link>
                         </li>
-                    )}      
-                {
-                    session ?   <ColorButton text='SignOut' onClick={()=>signOut()}/>
-                            :   <ColorButton text='SignIn' onClick={()=>signIn()}/>
-                }
+                    )}
+                    {user && 
+                    <li>
+                        <Link href={`/user/${user.username}`}>
+                            <Avatar image={user.image}/>
+                        </Link>
+                    </li>}    
+                    <li>
+                    {
+                        session ?   <ColorButton text='SignOut' onClick={()=>signOut()}/>
+                                :   <ColorButton text='SignIn' onClick={()=>signIn()}/>
+                    }
+                    </li>
                 </ul>
             </nav>
         </div>
