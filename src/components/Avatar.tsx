@@ -8,7 +8,7 @@ export default function Avatar({image,size='normal',highlight=false}:Props){
         <div className={getContainerStyle(size, highlight)}>
             {/* 외부 url사용, resource의 정확한 url을 외부 확인안될때 */}
             {/*eslint-disable-next-line @next/next/no-img-element*/}
-            <img className={`rounded-full bg-white ${getImageSizeStyle(size)}`} 
+            <img className={`object-cover rounded-full bg-white ${getImageSizeStyle(size)}`} 
                 alt="user profile" 
                 src={image ?? undefined}
                 referrerPolicy="no-referrer"/>
