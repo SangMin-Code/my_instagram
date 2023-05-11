@@ -1,9 +1,11 @@
+type Size= 'sm'|'lg'|'md';
+
 type Props = {
     image?:string | null ;
-    size?:'sm'|'normal', 
+    size?:Size; 
     highlight?:boolean }
 
-export default function Avatar({image,size='normal',highlight=false}:Props){
+export default function Avatar({image,size='lg',highlight=false}:Props){
     return(
         <div className={getContainerStyle(size, highlight)}>
             {/* 외부 url사용, resource의 정확한 url을 외부 확인안될때 */}
@@ -16,14 +18,25 @@ export default function Avatar({image,size='normal',highlight=false}:Props){
     )
 }
 
-function getContainerStyle(size:string,highlight:boolean):string{
+function getContainerStyle(size:Size,highlight:boolean):string{
     const base = 'rounded-full flex justify-center items-center';
     const hightLiteStyle = highlight ? 'bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300'
                                     :'';
-    const sizeStyle = size ==='sm' ? 'w-9 h-9' : 'w-[68px] h-[68px]'
-    return `${base} ${hightLiteStyle} ${sizeStyle} `
+    return `${base} ${hightLiteStyle} ${getContainerSizeStyle(size)} `
 }
 
-function getImageSizeStyle(size:string):string{
-    return size === 'sm' ? 'w-[34px] h-[34px] p-[0.1rem]':' w-16 h-16 p-[0.2rem]';
+function getContainerSizeStyle(size:Size):string{
+    switch(size){
+        case 'sm': return 'w-9 h-9';
+        case 'md': return 'w-11 h-11';
+        case 'lg': return 'w-[68px] h-[68px]'
+    }
+}
+
+function getImageSizeStyle(size:Size):string{
+    switch(size){
+        case 'sm': return 'w-[34px] h-[34px] p-[0.1rem]';
+        case 'md': return 'w-[42px] h-[42px] p-[0.1rem]'
+        case 'lg': return 'w-16 h-16 p-[0.2rem]';
+    }
 }
