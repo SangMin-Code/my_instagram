@@ -10,6 +10,7 @@ import { useState } from "react";
 import ModalPortal from "./ModalPortal";
 import PostModal from "./PostModal";
 import PostDetail from "./PostDetail";
+import PostUSerAvatar from "./PostUSerAvatar";
 
 type Props = {
     post:SimplePost
@@ -23,10 +24,7 @@ const PostsListCard = ({post,priority=false}:Props) =>{
 
     return(
         <article className="rounded-lg shadow-md border border-gray-200">
-            <div className="flex items-center p-2 ">
-                <Avatar image={userImage} highlight size='md'/>
-                <span className="text-gray-900 font-bold ml-2">{username}</span>
-            </div>
+            <PostUSerAvatar image={userImage} username={username}/>
             <Image 
                 className="w-full object-cover aspect-square"
                 src={image} alt={`photo by ${username}`} width={500} height={500}
