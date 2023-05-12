@@ -5,12 +5,13 @@ import {FormEvent, useState} from 'react'
 import useSWR from 'swr';
 import GridSpinner from './ui/GridSpinner';
 import UserCard from './UserCard';
+import useDebounce from '@/app/hooks/debounce';
 
  const UserSearch = ()=>{
     
     const [keyword,setKeyword] = useState('');
-    // Rerendering 할때마다 api 호출
-    const {data:users, isLoading, error} = useSWR<ProfileUser[]>(`/api/search/${keyword}`)
+    const debounced = useDebounce(keyword)
+    const {data:users, isLoading, error} = useSWR<ProfileUser[]>(`/api/search/${debounced}`)
     
     const onSubmit = (e:FormEvent)=>{
         e.preventDefault();
