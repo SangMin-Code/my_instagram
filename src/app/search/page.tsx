@@ -1,5 +1,9 @@
+import UserSearch from "@/components/UserSearch";
+
 export default function SearchPage(){
     return(
-        <h1>search</h1>
+        <h1>
+            <UserSearch/>
+        </h1>
     )
 }
