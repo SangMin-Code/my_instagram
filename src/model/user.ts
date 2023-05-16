@@ -1,3 +1,5 @@
+import { SimplePost } from "./post";
+
 export type AuthUser = {
     id:string;
     name:string;
@@ -21,4 +23,8 @@ export type SearchUser = AuthUser & {
 
 export type ProfileUser = SearchUser & {
     posts:number;
+}
+
+export type BookmarkUser = HomeUser & {
+    bookmarks: SimplePost[]
 }
