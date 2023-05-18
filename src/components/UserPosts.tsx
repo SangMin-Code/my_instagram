@@ -2,11 +2,11 @@
 
 import { ProfileUser } from "@/model/user"
 import { useState } from "react"
-import useSWR from "swr"
 import PostIcon from "./ui/icons/PostIcon"
 import BookmarkIcon from "./ui/icons/BookmarkIcon"
 import HeartIcon from "./ui/icons/HeartIcon"
 import PostGrid from "./PostGrid"
+import { CacheKeysContext } from "../context/CacheKeysContext"
 
 type Props= {
     user:ProfileUser
@@ -31,7 +31,9 @@ const UserPosts = ({user:{username}}:Props)=>{
                         <span className="hidden md:inline">{type}</span>
                     </li>)}
             </ul>
-            <PostGrid username={username} query={query}/>
+            <CacheKeysContext.Provider value={{postsKey: `/api/users/${username}/${query}`}}>
+                <PostGrid />
+            </CacheKeysContext.Provider>
         </section>
     )
 }

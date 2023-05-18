@@ -10,7 +10,6 @@ async function updateBookmark(postId:string, bookmark:boolean){
 }
 
 async function updatefollow(targetId:string, follow:boolean){
-    console.log(follow)
 
     return fetch('/api/follow',{
         method:'PUT',
