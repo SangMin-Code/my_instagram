@@ -1,4 +1,5 @@
-import { SimplePost } from '@/model/post';
+import { Comment, SimplePost } from '@/model/post';
+import { useCallback } from 'react';
 import  useSWR, { useSWRConfig }  from 'swr';
 
 async function updateLike(id:string, like:boolean){
@@ -8,10 +9,16 @@ async function updateLike(id:string, like:boolean){
     }).then((res)=>res.json())
 }
 
+async function addComment(id:string, comment:string){
+    return fetch('/api/comments',{
+        method:'POST',
+        body:JSON.stringify({id,comment })
+    }).then((res)=>res.json())
+}
+
 const usePosts= ()=>{
     const {data:posts, isLoading, error, mutate} = useSWR<SimplePost[]>('/api/post');
-
-    const setLike = (post:SimplePost, username:string, like:boolean)=>{
+    const setLike = useCallback((post:SimplePost, username:string, like:boolean)=>{
         const newPost = {...post, likes: like ? [...post.likes, username] : post.likes.filter(item => item !== username)}
         const newPosts = posts?.map(p=>p.id ===post.id ? newPost : p);
         
@@ -21,9 +28,24 @@ const usePosts= ()=>{
             revalidate:false,
             rollbackOnError:true,
         })
-    }
+    },[mutate,posts])
 
-    return {posts, isLoading, error, setLike};
+    const postComment = useCallback((post:SimplePost, comment:Comment)=>{
+        const newPost = 
+            {...post, 
+                comment:post.comments+1,
+            };
+        const newPosts = posts?.map(p=>p.id ===post.id ? newPost : p);
+        
+        return mutate(addComment(post.id, comment.comment),{
+            optimisticData : newPosts,
+            populateCache:false,
+            revalidate:false,
+            rollbackOnError:true,
+        })
+    },[posts,mutate])
+
+    return {posts, isLoading, error, setLike,postComment};
 }
 
 export default usePosts

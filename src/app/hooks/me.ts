@@ -1,4 +1,5 @@
 import { HomeUser } from '@/model/user';
+import { useCallback } from 'react';
 import  useSWR from 'swr';
 
 async function updateBookmark(postId:string, bookmark:boolean){
@@ -8,10 +9,19 @@ async function updateBookmark(postId:string, bookmark:boolean){
     }).then((res)=>res.json())
 }
 
+async function updatefollow(targetId:string, follow:boolean){
+    console.log(follow)
+
+    return fetch('/api/follow',{
+        method:'PUT',
+        body:JSON.stringify({id:targetId,follow })
+    }).then((res)=>res.json())
+}
+
 const useMe= ()=>{
     const {data:user, isLoading, error, mutate} = useSWR<HomeUser>('/api/me');
-
-    const setBookmark = (postId:string, bookmark:boolean)=>{
+    
+    const setBookmark = useCallback((postId:string, bookmark:boolean)=>{
         if(!user) return;
 
         const bookmarks = user.bookmarks;
@@ -26,9 +36,15 @@ const useMe= ()=>{
             revalidate:false,
             rollbackOnError:true,
         })
-    }
+    },[user,mutate])
 
-    return {user, isLoading, error, setBookmark};
+
+    const toggleFollow = useCallback((targetId:string, follow:boolean)=>{
+        return mutate(updatefollow(targetId,follow), {populateCache:false});
+
+    } ,[mutate])
+
+    return {user, isLoading, error, setBookmark,toggleFollow};
 }
 
 export default useMe

@@ -12,8 +12,8 @@ export default function UserProfile({user}:Props){
     const {image, username, name, followers, following, posts} = user
     const info = [
         {title:'posts',data:posts},
-        {title:'following',data:posts},
-        {title:'followers',data:posts}
+        {title:'followers',data:followers},
+        {title:'following',data:following}
 
     ]
     return(
